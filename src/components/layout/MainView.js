@@ -8,10 +8,12 @@ import Tab from "@material-ui/core/Tab";
 import MoviesView from "../views/MoviesView";
 import SearchView from "../views/SearchView";
 import TvShowView from "../views/TvShowView";
+import SearchForm from "../forms/SearchForm";
+import { searchMovie } from "../../services/api";
 
 const useStyles = makeStyles({
   mainViewContainer: {
-    // border:"1px solid black",
+    border: "1px solid black",
     padding: 0
   }
 });
@@ -20,6 +22,39 @@ const MainView = () => {
   const classes = useStyles();
 
   const [value, setValue] = useState(0);
+  const [searchResult, setSearchResult] = useState({
+    data: null,
+    status: null
+  });
+
+  const handleSearchFormTextChange = event => {
+    if (event.target.value.length >= 1)
+      setSearchResult({ data: [], status: "Init" });
+    else {
+      setSearchResult({ data: [], status: null });
+    }
+  };
+
+  const handleSearchFormSubmit = (query, type) => {
+    if(query.trim().length>0)
+    {
+    searchMovie(query, type).then(result => {
+      //Successfully get search result
+      if (result.status === 200) {
+        result.data.results.length > 0
+          ? setSearchResult({ data: result.data.results, status: "OK" })
+          : setSearchResult({ data: [], status: "No result" });
+      }
+      //Fail to get search result
+      else {
+        console.log(result);
+      }
+    });
+    }
+    else{
+      setSearchResult({ data: [], status: "Invalid" });
+    }
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -27,6 +62,10 @@ const MainView = () => {
 
   return (
     <BrowserRouter>
+      <SearchForm
+        handleSearchFormSubmit={handleSearchFormSubmit}
+        handleSearchFormTextChange={handleSearchFormTextChange}
+      />
       <Container className={classes.mainViewContainer}>
         <AppBar position="static" color="default">
           <Tabs
@@ -42,9 +81,15 @@ const MainView = () => {
         </AppBar>
 
         <Switch>
-          <Route exact path={["/", "/movies"]} component={MoviesView} />
-          <Route path="/search" component={SearchView} />
-          <Route path="/tv-show" component={TvShowView} />
+          <Route exact path={["/", "/movies"]}>
+            <MoviesView />
+          </Route>
+          <Route path="/search">
+            <SearchView searchResult={searchResult} />
+          </Route>
+          <Route path="/tv-show">
+            <TvShowView />
+          </Route>
         </Switch>
       </Container>
     </BrowserRouter>

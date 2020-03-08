@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Container from "@material-ui/core/Container";
 import DropdownSelect from "../shared/DropdownSelect";
 import ListContainer from "../containers/ListContainer";
 import Loading from "../shared/Loading";
@@ -34,14 +35,14 @@ const MoviesView = () => {
   };
 
   return (
-    <div>
+    <Container>
       <DropdownSelect
         handleCategoryChange={handleCategoryChange}
         menuName="Category"
         menuOptions={menuOptions}
       />
       {isLoading ? <Loading /> : <ListContainer data={movies} />}
-    </div>
+    </Container>
   );
 };
 

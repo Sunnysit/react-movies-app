@@ -1,5 +1,6 @@
 import React ,{useState} from 'react';
 import DropdownSelect from "../shared/DropdownSelect";
+import Container from "@material-ui/core/Container";
 import ListContainer from '../containers/ListContainer';
 import Loading from "../shared/Loading";
 import {getTvShows} from '../../services/api';
@@ -20,13 +21,13 @@ const TvShowView = () => {
   const handleCategoryChange = (category)=>{
     setIsLoading(true);
     getTvShows(category).then(result=>{
-      //Successfully get movies data, save in movies state
+      //Successfully get tv show data, save in movies state
       if(result.status===200)
       { 
         setTvShows(result.data.results);
         setIsLoading(false);
       }
-      //Fail to get movies data, log the error message
+      //Fail to get tv shows data, log the error message
       else{
         console.log(result);
       }
@@ -34,10 +35,10 @@ const TvShowView = () => {
   }
 
   return (
-    <div>
+    <Container>
       <DropdownSelect handleCategoryChange={handleCategoryChange} menuName="Category" menuOptions={menuOptions}/>
       {isLoading ? <Loading /> : <ListContainer data={tvShows}/>}
-    </div>
+    </Container>
   );
 }
 

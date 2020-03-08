@@ -20,3 +20,13 @@ export const getTvShows = async category => {
 
   return result;
 };
+
+export const searchMovie = async (name,type) => {
+  const result = await axios
+  .get(`${BASE_URL}/search/${type}?query=${name}&api_key=${MOVIE_API}`)
+  .catch(err => {
+    return err;
+  });
+
+return result;
+}
