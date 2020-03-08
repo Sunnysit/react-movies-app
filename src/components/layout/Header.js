@@ -4,6 +4,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
+    headerContainer:{
+        padding:0
+    },
     headerTitle:{
         border:"3px solid black",
         margin:"1rem auto",
@@ -16,7 +19,7 @@ const Header = () => {
     const classes = useStyles();
 
     return (
-        <Container>
+        <Container className={classes.headerContainer}>
             <Typography className={classes.headerTitle} component="h1" variant="h3">React Movies App</Typography>
         </Container>
     )

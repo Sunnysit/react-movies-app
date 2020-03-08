@@ -1,6 +1,7 @@
 import React ,{useState} from 'react';
 import DropdownSelect from "../shared/DropdownSelect";
 import ListContainer from '../containers/ListContainer';
+import Loading from "../shared/Loading";
 import {getTvShows} from '../../services/api';
 
 const TvShowView = () => {
@@ -12,15 +13,18 @@ const TvShowView = () => {
     { name: "Top Rated", value: "top_rated" }
   ];
 
-  //state for storing movies data
+  //state for storing tv shows data
   const [tvShows,setTvShows] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleCategoryChange = (category)=>{
+    setIsLoading(true);
     getTvShows(category).then(result=>{
       //Successfully get movies data, save in movies state
       if(result.status===200)
       { 
         setTvShows(result.data.results);
+        setIsLoading(false);
       }
       //Fail to get movies data, log the error message
       else{
@@ -32,7 +36,7 @@ const TvShowView = () => {
   return (
     <div>
       <DropdownSelect handleCategoryChange={handleCategoryChange} menuName="Category" menuOptions={menuOptions}/>
-      <ListContainer data={tvShows}/>
+      {isLoading ? <Loading /> : <ListContainer data={tvShows}/>}
     </div>
   );
 }
