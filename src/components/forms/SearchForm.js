@@ -7,49 +7,52 @@ import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
   root: {
-      display:"flex",
-      alignItems:"center",
-      justifyContent:"center",
-      margin:"3rem auto"
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    margin: "3rem auto"
   },
   searchName: {
     width: 300,
-    marginRight:8
+    marginRight: 8
   },
   searchType: {
     width: 150,
-    marginRight:8
+    marginRight: 8
   }
 }));
 
 const searchTypes = ["movie", "multi", "tv"];
 
-const SearchForm = ({handleSearchFormSubmit,handleSearchFormTextChange}) => {
+const SearchForm = ({ handleSearchFormSubmit, handleSearchFormTextChange }) => {
   const classes = useStyles();
 
-  const [query,setQuery] = useState("");
+  const [query, setQuery] = useState("");
   const [type, setType] = useState("multi");
 
   const handleTextChange = event => {
     setQuery(event.target.value);
     handleSearchFormTextChange(event);
-  }
+  };
 
   const handleTypeChange = event => {
     setType(event.target.value);
-
   };
 
   const handleSubmit = event => {
     event.preventDefault();
-    handleSearchFormSubmit(query,type);
+    handleSearchFormSubmit(query, type);
     setQuery("");
-
-  }
+  };
 
   return (
     <Container>
-      <form onSubmit={(e)=>handleSubmit(e)} className={classes.root} noValidate autoComplete="off">
+      <form
+        onSubmit={e => handleSubmit(e)}
+        className={classes.root}
+        noValidate
+        autoComplete="off"
+      >
         <TextField
           className={classes.searchName}
           id="search-name"
@@ -66,7 +69,8 @@ const SearchForm = ({handleSearchFormSubmit,handleSearchFormTextChange}) => {
           onChange={handleTypeChange}
           variant="outlined"
           className={classes.searchType}
-        >Í
+        >
+          Í
           {searchTypes.map(option => (
             <MenuItem key={option} value={option}>
               {option}

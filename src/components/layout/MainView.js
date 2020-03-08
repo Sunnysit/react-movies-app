@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 const MainView = () => {
   const classes = useStyles();
 
-  const [value, setValue] = useState(0);
+  const [tabValue, setTabValue] = useState(0);
   const [searchResult, setSearchResult] = useState({
     data: null,
     status: null
@@ -36,28 +36,27 @@ const MainView = () => {
   };
 
   const handleSearchFormSubmit = (query, type) => {
-    if(query.trim().length>0)
-    {
-    searchMovie(query, type).then(result => {
-      //Successfully get search result
-      if (result.status === 200) {
-        result.data.results.length > 0
-          ? setSearchResult({ data: result.data.results, status: "OK" })
-          : setSearchResult({ data: [], status: "No result" });
-      }
-      //Fail to get search result
-      else {
-        console.log(result);
-      }
-    });
-    }
-    else{
+    //Validate query
+    if (query.trim().length > 0) {
+      searchMovie(query, type).then(result => {
+        //Successfully get search result
+        if (result.status === 200) {
+          result.data.results.length > 0
+            ? setSearchResult({ data: result.data.results, status: "OK" })
+            : setSearchResult({ data: [], status: "No result" });
+        }
+        //Fail to get search result
+        else {
+          console.log(result);
+        }
+      });
+    } else {
       setSearchResult({ data: [], status: "Invalid" });
     }
   };
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
   };
 
   return (
@@ -69,8 +68,8 @@ const MainView = () => {
       <Container className={classes.mainViewContainer}>
         <AppBar position="static" color="default">
           <Tabs
-            value={value}
-            onChange={handleChange}
+            value={tabValue}
+            onChange={handleTabChange}
             indicatorColor="primary"
             variant="fullWidth"
           >
