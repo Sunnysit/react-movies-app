@@ -21,29 +21,43 @@ const useStyles = makeStyles({
 const MainView = () => {
   const classes = useStyles();
 
+  //State for tab control
   const [tabValue, setTabValue] = useState(0);
+
+  //States for search components
   const [searchResult, setSearchResult] = useState({
     data: null,
     status: null
   });
+  const [query, setQuery] = useState("");
+  const [type, setType] = useState("multi");
+  const [searchResultPage, setSearchResultPage] = useState(0);
 
   const handleSearchFormTextChange = event => {
-    if (event.target.value.length >= 1)
+    if (event.target.value.length >= 1) {
+      setQuery(event.target.value);
       setSearchResult({ data: [], status: "Init" });
-    else {
+    } else {
       setSearchResult({ data: [], status: null });
     }
   };
 
-  const handleSearchFormSubmit = (query, type) => {
+  const handleSearchTypeChange = event => {
+    setType(event.target.value);
+  };
+
+  const handleSearchFormSubmit = event => {
+    event.preventDefault();
     //Validate query
     if (query.trim().length > 0) {
       searchMovie(query, type).then(result => {
         //Successfully get search result
         if (result.status === 200) {
+          console.log(result.data);
           result.data.results.length > 0
             ? setSearchResult({ data: result.data.results, status: "OK" })
             : setSearchResult({ data: [], status: "No result" });
+          setSearchResultPage(result.data.total_pages);
         }
         //Fail to get search result
         else {
@@ -55,13 +69,37 @@ const MainView = () => {
     }
   };
 
+  const handleSearchResultPageChange = (event, page) => {
+    searchMovie(query, type, page).then(result => {
+      //Successfully get search result
+      if (result.status === 200) {
+        console.log(result.data);
+        result.data.results.length > 0
+          ? setSearchResult({ data: result.data.results, status: "OK" })
+          : setSearchResult({ data: [], status: "No result" });
+        setSearchResultPage(result.data.total_pages);
+      }
+      //Fail to get search result
+      else {
+        console.log(result);
+      }
+    });
+  };
+
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
+    if (newValue === 1) {
+      setSearchResult({ data: null, status: null });
+      setQuery("");
+    }
   };
 
   return (
     <BrowserRouter>
       <SearchForm
+        query={query}
+        type={type}
+        handleSearchTypeChange={handleSearchTypeChange}
         handleSearchFormSubmit={handleSearchFormSubmit}
         handleSearchFormTextChange={handleSearchFormTextChange}
       />
@@ -84,7 +122,11 @@ const MainView = () => {
             <MoviesView />
           </Route>
           <Route path="/search">
-            <SearchView searchResult={searchResult} />
+            <SearchView
+              handlePageChange={handleSearchResultPageChange}
+              page={searchResultPage}
+              searchResult={searchResult}
+            />
           </Route>
           <Route path="/tv-show">
             <TvShowView />

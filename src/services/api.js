@@ -1,9 +1,9 @@
 import axios from "axios";
 import { BASE_URL, MOVIE_API } from "../config/api_config";
 
-export const getMovies = async category => {
+export const getMovies = async (category, page = 1) => {
   const result = await axios
-    .get(`${BASE_URL}/movie/${category}?api_key=${MOVIE_API}`)
+    .get(`${BASE_URL}/movie/${category}?api_key=${MOVIE_API}&page=${page}`)
     .catch(err => {
       return err;
     });
@@ -11,9 +11,9 @@ export const getMovies = async category => {
   return result;
 };
 
-export const getTvShows = async category => {
+export const getTvShows = async (category, page = 1) => {
   const result = await axios
-    .get(`${BASE_URL}/tv/${category}?api_key=${MOVIE_API}`)
+    .get(`${BASE_URL}/tv/${category}?api_key=${MOVIE_API}&page=${page}`)
     .catch(err => {
       return err;
     });
@@ -21,12 +21,14 @@ export const getTvShows = async category => {
   return result;
 };
 
-export const searchMovie = async (name,type) => {
+export const searchMovie = async (name, type, page = 1) => {
   const result = await axios
-  .get(`${BASE_URL}/search/${type}?query=${name}&api_key=${MOVIE_API}`)
-  .catch(err => {
-    return err;
-  });
+    .get(
+      `${BASE_URL}/search/${type}?query=${name}&api_key=${MOVIE_API}&page=${page}`
+    )
+    .catch(err => {
+      return err;
+    });
 
-return result;
-}
+  return result;
+};

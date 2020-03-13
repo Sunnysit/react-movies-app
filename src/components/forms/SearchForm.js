@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -24,31 +24,19 @@ const useStyles = makeStyles(theme => ({
 
 const searchTypes = ["movie", "multi", "tv"];
 
-const SearchForm = ({ handleSearchFormSubmit, handleSearchFormTextChange }) => {
+const SearchForm = ({
+  query,
+  type,
+  handleSearchTypeChange,
+  handleSearchFormSubmit,
+  handleSearchFormTextChange
+}) => {
   const classes = useStyles();
-
-  const [query, setQuery] = useState("");
-  const [type, setType] = useState("multi");
-
-  const handleTextChange = event => {
-    setQuery(event.target.value);
-    handleSearchFormTextChange(event);
-  };
-
-  const handleTypeChange = event => {
-    setType(event.target.value);
-  };
-
-  const handleSubmit = event => {
-    event.preventDefault();
-    handleSearchFormSubmit(query, type);
-    setQuery("");
-  };
 
   return (
     <Container>
       <form
-        onSubmit={e => handleSubmit(e)}
+        onSubmit={handleSearchFormSubmit}
         className={classes.root}
         noValidate
         autoComplete="off"
@@ -59,14 +47,14 @@ const SearchForm = ({ handleSearchFormSubmit, handleSearchFormTextChange }) => {
           label="Search"
           variant="outlined"
           value={query}
-          onChange={handleTextChange}
+          onChange={handleSearchFormTextChange}
         />
         <TextField
           id="search-type"
           select
           label="Search Type"
           value={type}
-          onChange={handleTypeChange}
+          onChange={handleSearchTypeChange}
           variant="outlined"
           className={classes.searchType}
         >
