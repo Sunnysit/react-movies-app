@@ -58,7 +58,6 @@ const SearchForm = ({
           variant="outlined"
           className={classes.searchType}
         >
-          Í
           {searchTypes.map(option => (
             <MenuItem key={option} value={option}>
               {option}

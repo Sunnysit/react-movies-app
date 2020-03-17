@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const DropdownSelect = ({ menuName, menuOptions,handleCategoryChange }) => {
+const DropdownSelect = ({ menuName, menuOptions, handleCategoryChange }) => {
   const classes = useStyles();
 
   const inputLabel = useRef(null);
@@ -39,7 +39,7 @@ const DropdownSelect = ({ menuName, menuOptions,handleCategoryChange }) => {
   return (
     <div>
       <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
+        <InputLabel ref={inputLabel} id="category-label">
           {menuName}
         </InputLabel>
         <Select
